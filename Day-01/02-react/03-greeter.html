@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script src="jquery-3.2.1.js"></script>
+	<script type="text/babel">
+		var ReactGreeter = React.createClass({
+			render : function(){
+				return (
+					<h1>Hi {this.props.name}!, Have a nice day!</h1>
+				)
+			}
+		});
+
+		function JQueryGreeter(name){
+			var $root = this.$root = $('<div></div>');
+			this.render = function(){
+				this.$root.html('<h1>Hi ' + name + '!, Have a nice day!</h1>');
+				return this;
+			}
+		}
+
+		$(function(){
+			
+			$('#btnGreetJQuery').click(function(){
+
+				var name = prompt('Enter the name');
+				var jQGreeter = new JQueryGreeter(name);
+				$('#jquery-content').html(jQGreeter.render().$root.html());
+			});
+
+			$('#btnGreetReact').click(function(){
+				var name = prompt('Enter the name');
+				ReactDOM.render(<ReactGreeter name={name}></ReactGreeter>, document.getElementById('react-content'));
+			})
+		})
+	</script>
+</head>
+<body>
+	<input type="button" value="Greet [jQuery]" id="btnGreetJQuery">
+	<div id="jquery-content">
+		
+
+	</div>
+	<hr>
+	<input type="button" value="Greet [React]" id="btnGreetReact">
+	<div id="react-content">
+		
+
+	</div>
+</body>
+</html>
