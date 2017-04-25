@@ -39,11 +39,11 @@
 		var Component = React.Component;
 
 		class Calculator extends Component{
-			onNumber1Change(evt){
-				this.props.model.number1 = parseInt(evt.target.value);
+			onNumber1Change(value){
+				this.props.model.number1 = value;
 			}
-			onNumber2Change(evt){
-				this.props.model.number2 = parseInt(evt.target.value);
+			onNumber2Change(value){
+				this.props.model.number2 = value;
 			}
 			onAddClick(){
 				this.props.model.add();
@@ -51,12 +51,24 @@
 			render(){
 				return(
 					<div>
-						<label htmlFor="">Number 1 :</label>
-						<input type="number" onChange={this.onNumber1Change.bind(this)} />
-						<label htmlFor="">Number 2 :</label>
-						<input type="number" onChange={this.onNumber2Change.bind(this)} />
+						<NumberInput label="Number 1 :" onChange={this.onNumber1Change.bind(this)}></NumberInput>
+						<NumberInput label="Number 2 :" onChange={this.onNumber2Change.bind(this)}></NumberInput>
 						<input type="button" value="Add" onClick={this.onAddClick.bind(this)}/>
 						<CalculatorResult model={this.props.model.result}></CalculatorResult>
+					</div>
+				)
+			}
+		}
+		class NumberInput extends Component{
+			onNumberChange(evt){
+				var inputValue = parseInt(evt.target.value);
+				this.props.onChange(inputValue);
+			}
+			render(){
+				return (
+					<div>
+						<label htmlFor="">{this.props.label}</label>
+						<input type="number" onChange={this.onNumberChange.bind(this)} />
 					</div>
 				)
 			}
