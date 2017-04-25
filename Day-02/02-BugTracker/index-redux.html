@@ -45,38 +45,9 @@
 	<script src="react.js"></script>
 	<script src="react-dom.js"></script>
 	<script src="babel.min.js"></script>
+	<script src="redux.js"></script>
 	<script type="text/babel">
-		function createStore(reducer){
-			var currentState = undefined;
-			var INIT_ACTION = { type : 'INIT'};
-
-			var _callbacks = [];
-			function subscribe(callbackFn){
-				if (typeof callbackFn !== 'function') return;
-				_callbacks.push(callbackFn);
-			}
-			function triggerChange(){
-				_callbacks.forEach(callbackFn => callbackFn());
-			}
-			function getState(){
-				return currentState;
-			}
-			function dispatch(action){
-				var newState = reducer(currentState, action);
-				if (newState === currentState) return;
-				currentState = newState;
-				triggerChange();
-			}
-
-			dispatch(INIT_ACTION);
-
-			return {
-				getState : getState,
-				subscribe : subscribe,
-				dispatch : dispatch
-			}
-		}
-
+		
 		function bugsReducer(currentState = [], action){
 			switch(action.type){
 				case 'ADD_NEW' :
@@ -128,22 +99,10 @@
 			}
 		};
 
-		function bindActionCreators(actions, dispatch){
-			function createDispatchableAction(actionFn, dispatch){
-				return function(){
-					var action = actionFn.apply(this, arguments);
-					dispatch(action);
-				}
-			}
-			var result = {};
-			for(var key in actions){
-				result[key] = createDispatchableAction(actions[key], dispatch)
-			}
-			return result;
-		}
+		
 
-		var store = createStore(bugsReducer);
-		var actions = bindActionCreators(bugActions, store.dispatch);
+		var store = Redux.createStore(bugsReducer);
+		var actions = Redux.bindActionCreators(bugActions, store.dispatch);
 
 		class BugTracker extends React.Component{
 			constructor(){
